@@ -1,0 +1,192 @@
+﻿Begin Form *
+    Background = "&H"
+    DockTitleVisible = True
+    DrawOnPaint = True
+    GlobalX = 0
+    GlobalY = 0
+    Height = 554
+    LoadedHeight = 551
+    LoadedWidth = 539
+    LoadedX = 261
+    LoadedY = 36
+    MouseTracking = True
+    Opacity = 100
+    Resizable = True
+    SQLDelete = True
+    SQLInsert = True
+    SQLUpdate = True
+    Visible = True
+    Width = 539
+    X = 250
+    Y = 36
+
+
+  Begin CommandButton CmdControl
+    Caption = "Control"
+    DrawOnPaint = True
+    Enabled = True
+    GlobalX = 0
+    GlobalY = 0
+    Height = 34
+    LoadedHeight = 34
+    LoadedWidth = 140
+    LoadedX = 25
+    LoadedY = 80
+    ParentControl = ""
+    TabIndex = 0
+    Visible = True
+    Width = 140
+    X = 25
+    Y = 80
+  End
+
+  Begin CommandButton CmdGoal
+    Caption = "Goal"
+    DrawOnPaint = True
+    Enabled = True
+    GlobalX = 0
+    GlobalY = 0
+    Height = 34
+    LoadedHeight = 34
+    LoadedWidth = 140
+    LoadedX = 190
+    LoadedY = 80
+    ParentControl = ""
+    TabIndex = 0
+    Visible = True
+    Width = 140
+    X = 198
+    Y = 79
+  End
+
+  Begin CommandButton CmdCredit
+    Caption = "Credit"
+    DrawOnPaint = True
+    Enabled = True
+    GlobalX = 0
+    GlobalY = 0
+    Height = 34
+    LoadedHeight = 34
+    LoadedWidth = 140
+    LoadedX = 374
+    LoadedY = 80
+    ParentControl = ""
+    TabIndex = 0
+    Visible = True
+    Width = 140
+    X = 374
+    Y = 80
+  End
+
+  Begin Label LblHelp1
+    Caption = "Instructions"
+    DrawOnPaint = True
+    Enabled = True
+    FontColor = "&HFFFFFF"
+    FontSize = 50
+    GlobalX = 0
+    Height = 72
+    LoadedHeight = 72
+    LoadedWidth = 296
+    LoadedX = 117
+    LoadedY = 0
+    ParentControl = ""
+    TabIndex = 0
+    TableViewVisible = True
+    Visible = True
+    Width = 296
+    WordWrap = True
+    X = 117
+  End
+
+  Begin Label lblControl
+    Caption = "Control for this game is fairly simple. to slowdown the ship thats falling to the ground, press up arrow. Repeating or long pressing the button will slowdown the ship even more. Press right or left arrow to move the ship side ways. since there are no gravity, ship will keep falling if you press only one side."
+    DrawOnPaint = True
+    Enabled = True
+    FontColor = "&HFFFFFF"
+    FontSize = 20
+    GlobalX = 0
+    GlobalY = 0
+    Height = 234
+    ParentControl = ""
+    TabIndex = 0
+    TableViewVisible = True
+    Visible = True
+    Width = 400
+    WordWrap = True
+    X = 79
+    Y = 178
+  End
+
+  Begin Label lblGoal
+    Caption = "The goal of this game is make get as many safelanding of a spaceship on safe platform as many times as possible before the ship fuel runs out. To get higher score in this game, you must land your ship many times as possible while using little fuel and landing fast. This will give you extra points towards your total point. Just a heads up that if you land on the ground too hard, the ship will crash. Good Luck!"
+    DrawOnPaint = True
+    Enabled = True
+    FontColor = "&HFFFFFF"
+    FontSize = 20
+    GlobalX = 0
+    GlobalY = 0
+    Height = 214
+    ParentControl = ""
+    TabIndex = 0
+    TableViewVisible = True
+    Visible = False
+    Width = 372
+    WordWrap = True
+    X = 94
+    Y = 184
+  End
+
+  Begin Label lblCredit
+    Caption = "This game is made by Yuya Oguchi. All the rights except for the spaceship image goes to Yuya."
+    DrawOnPaint = True
+    Enabled = True
+    FontColor = "&HFFFFFF"
+    FontSize = 20
+    GlobalX = 0
+    GlobalY = 0
+    Height = 119
+    ParentControl = ""
+    TabIndex = 0
+    TableViewVisible = True
+    Visible = False
+    Width = 355
+    WordWrap = True
+    X = 97
+    Y = 230
+  End
+
+End Form
+
+
+Private Sub CmdControl_OnEvent()
+  CmdControl.Enabled = false
+  CmdGoal.enabled = true
+  CmdCredit.enabled = true 
+  lblCredit.visible = False
+  lblGoal.visible = False
+  lblControl.visible = True
+End Sub
+
+
+
+Private Sub CmdGoal_OnEvent()
+  CmdControl.Enabled = True
+  CmdGoal.enabled = False
+  CmdCredit.enabled = True
+  lblCredit.visible = False
+  lblGoal.visible = True
+  lblControl.visible = False
+End Sub
+
+
+
+Private Sub CmdCredit_OnEvent()
+  CmdControl.Enabled = True
+  CmdGoal.enabled = True
+  CmdCredit.enabled = False
+  lblCredit.visible = True
+  lblGoal.visible = False
+  lblControl.visible = False
+End Sub
+

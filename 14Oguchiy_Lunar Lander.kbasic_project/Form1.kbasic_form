@@ -1,0 +1,489 @@
+﻿Begin Form *
+    Background = "&H"
+    Caption = "Lunar Lander"
+    DockTitleVisible = True
+    DrawOnPaint = True
+    GlobalX = 0
+    GlobalY = 0
+    Height = 706
+    LoadedHeight = 703
+    LoadedWidth = 500
+    LoadedX = 290
+    LoadedY = -1
+    MouseTracking = True
+    Opacity = 100
+    Resizable = False
+    SQLDelete = True
+    SQLInsert = True
+    SQLUpdate = True
+    Visible = True
+    Width = 500
+    X = 290
+    Y = -1
+
+
+  Begin Label LblPause
+    Caption = "Paused"
+    DrawOnPaint = True
+    Enabled = True
+    FontColor = "&HFFFFFF"
+    FontSize = 60
+    GlobalX = 0
+    GlobalY = 0
+    Height = 76
+    LoadedHeight = 76
+    LoadedWidth = 212
+    LoadedX = 154
+    LoadedY = 217
+    ParentControl = ""
+    TabIndex = 0
+    TableViewVisible = True
+    Visible = False
+    Width = 212
+    WordWrap = True
+    X = 154
+    Y = 217
+  End
+
+  Begin Timer Timer1
+    DrawOnPaint = True
+    Enabled = False
+    GlobalX = 0
+    Height = 52
+    Interval = 100
+    LoadedHeight = 52
+    LoadedWidth = 49
+    LoadedX = 413
+    LoadedY = 0
+    ParentControl = ""
+    TabIndex = 0
+    Width = 49
+    X = 413
+  End
+
+  Begin ImageBox imgShip
+    DrawOnPaint = True
+    FocusOrder = 10
+    GlobalX = 0
+    GlobalY = 0
+    Height = 40
+    LoadedHeight = 40
+    LoadedWidth = 38
+    LoadedX = 212
+    LoadedY = 43
+    ParentControl = ""
+    StringValue = "spaceship-icon.png"
+    TabIndex = 0
+    TableViewVisible = True
+    Visible = True
+    Width = 38
+    X = 212
+    Y = 43
+  End
+
+  Begin Label LblStats
+    Caption = "Label"
+    DrawOnPaint = True
+    Enabled = True
+    FontColor = "&HFFFFFF"
+    FontSize = 20
+    GlobalX = 0
+    GlobalY = 0
+    Height = 185
+    LoadedHeight = 185
+    LoadedWidth = 115
+    LoadedX = 10
+    LoadedY = 22
+    ParentControl = ""
+    TabIndex = 0
+    TableViewVisible = True
+    Visible = True
+    Width = 115
+    WordWrap = True
+    X = 10
+    Y = 22
+  End
+
+  Begin CommandButton CmdStart
+    Caption = "Start"
+    DrawOnPaint = True
+    Enabled = True
+    GlobalX = 0
+    GlobalY = 0
+    Height = 34
+    LoadedHeight = 34
+    LoadedWidth = 95
+    LoadedX = 206
+    LoadedY = 246
+    ParentControl = ""
+    TabIndex = 0
+    Visible = True
+    Width = 95
+    X = 206
+    Y = 246
+  End
+
+  Begin CommandButton CmdPause
+    Caption = "Pause"
+    DrawOnPaint = True
+    Enabled = False
+    GlobalX = 0
+    GlobalY = 0
+    Height = 34
+    LoadedHeight = 34
+    LoadedWidth = 105
+    LoadedX = 392
+    LoadedY = 7
+    ParentControl = ""
+    TabIndex = 0
+    Visible = True
+    Width = 105
+    X = 392
+    Y = 7
+  End
+
+  Begin CommandButton CmdHelp
+    Caption = "Instruction"
+    DrawOnPaint = True
+    Enabled = True
+    GlobalX = 0
+    GlobalY = 0
+    Height = 34
+    LoadedHeight = 34
+    LoadedWidth = 104
+    LoadedX = 392
+    LoadedY = 39
+    ParentControl = ""
+    TabIndex = 0
+    Visible = True
+    Width = 104
+    X = 392
+    Y = 39
+  End
+
+  Begin CommandButton CmdQuit
+    Caption = "Quit"
+    DrawOnPaint = True
+    Enabled = True
+    GlobalX = 0
+    GlobalY = 0
+    Height = 34
+    LoadedHeight = 34
+    LoadedWidth = 104
+    LoadedX = 392
+    LoadedY = 70
+    ParentControl = ""
+    TabIndex = 0
+    Visible = True
+    Width = 104
+    X = 392
+    Y = 70
+  End
+
+  Begin CommandButton CmdTryAgain
+    Caption = "Try Again"
+    DrawOnPaint = True
+    Enabled = True
+    GlobalX = 0
+    GlobalY = 0
+    Height = 34
+    LoadedHeight = 34
+    LoadedWidth = 109
+    LoadedX = 199
+    LoadedY = 289
+    ParentControl = ""
+    TabIndex = 0
+    Visible = False
+    Width = 109
+    X = 199
+    Y = 289
+  End
+
+End Form
+/*
+Yuya Oguchi
+4/8/13
+Intermediate Programming
+Mr.Randell
+*/
+
+Dim ShipTop as integer
+Dim ShipLeft as integer
+Dim ShipRight as integer
+Dim ShipBottom as integer
+
+Dim MoveUp as integer
+Dim MoveDown as integer
+Dim MoveSide as integer
+
+Dim YValue as integer
+Dim i as integer
+Dim j as integer
+Dim Fuel as integer
+
+Dim Points as integer
+Dim Spdpoints as integer
+Dim Fuelpoints as integer
+Dim TSpdpoints as integer
+Dim TFuelpoints as integer
+Dim Land as integer
+
+Public Base[10] As Label
+'------------------------------------------------------------------------------------
+Private Sub CmdStart_OnEvent()'starting the game
+  Timer1.enabled = True
+  CmdStart.visible = False
+  CmdPause.enabled = True
+End Sub
+'------------------------------------------------------------------------------------
+Private Sub CmdPause_OnEvent() 'pause
+  
+ if timer1.enabled = true then 'if not paused, then pause
+   Timer1.enabled = false
+   LblPause.visible = True
+else if timer1.enabled = false then'if paused, then unpause
+   timer1.enabled = true
+   LblPause.visible = False
+   end if
+ End if
+End Sub
+'------------------------------------------------------------------------------------
+Private Sub Form_OnOpen()     
+'set basic stats for point system and fuel as well as speed   
+Fuel = 150  
+moveup = 1
+spdpoints = 100
+'randomly create labels on the bottom of screen
+   randomize
+   dim i as integer   
+     
+   For i = 1 to 10
+      CreateBase i
+    Next
+    Safespot()
+
+End Sub
+'------------------------------------------------------------------------------------
+Private Sub CreateBase(Index as integer)
+
+  Base[index] = New Label(Me)  
+  Base[Index].text = ""
+  Base[Index].group = "Base"
+  Base[Index].width = 50
+  Base[Index].Background = "&HFFFFFF"
+ 
+ /* use formulas, if/then, random numbers etc to define the moonsacpe */
+  Base[Index].y = Form1.height - 50 - rnd*150
+  Base[Index].height = Form1.Height - Base[Index].y
+  Base[Index].x = Index * 51 - 50
+  
+End Sub  
+'------------------------------------------------------------------------------------
+Private Sub DeleteBase(Index as integer) 'Erases the landscape
+      
+      Base[Index].y = 0
+      Base[Index].height = 0
+      Base[Index].x = 0 
+
+End Sub
+'------------------------------------------------------------------------------------
+Sub Safespot()
+  j = Rnd*9 + 1
+
+    Base[j].background = "&HFFFF00"
+
+End sub
+'------------------------------------------------------------------------------------
+Sub SpeedRight()'movement speed to right
+  Moveside = Moveside + 1
+  if moveside > 5 then'spaceship can't go up faster than 5 to side
+    moveside = 5
+  end if
+End Sub
+
+Sub SpeedLeft()'movement speed to left
+  Moveside = Moveside - 1
+  if moveside < -5 then'spaceship can't go up faster than 5 to side
+    moveside = -5
+  end if
+End Sub
+
+Sub SpeedUp()'slowing down spaceship 
+  Movedown = Movedown - 4
+  if movedown > 10 then 'spaceship can't go up faster than 10
+    movedown = 10
+  end if
+End Sub 
+'------------------------------------------------------------------------------------
+Private Sub Form_OnKeyDown(KeyCode As Integer, Shift As Boolean, Control As Boolean, Alt As Boolean)
+    ' move left
+    If KeyCode = Key.Left And imgShip.Left > 0 and fuel > 0 Then
+        imgship.left = imgship.left + MoveSide
+        SpeedLeft
+        fuel = fuel - 1
+    End If
+    ' move right
+    If KeyCode = Key.Right And imgShip.Left < Form1.Width - imgShip.Width and fuel > 0 Then
+        imgship.Left = imgShip.Left + MoveSide
+        SpeedRight
+        fuel = fuel - 1
+    End If  
+    'slow down
+    If KeyCode = Key.Up And imgShip.Top > 0 and fuel > 0 Then
+        imgship.top = imgship.top - MoveDown
+        speedUP
+        fuel = fuel - 1
+    End If
+End Sub
+'------------------------------------------------------------------------------------
+Sub ShipRandom()'place spaceship at random spot after successful landing
+  imgship.top = 10
+  imgship.left = 5 + rnd*val(form1.width - 10)
+  Movedown = 0
+  Moveside = 0
+  Timer1.Enabled = True
+end sub
+'------------------------------------------------------------------------------------
+Sub animateSpaceShip(Ship As Control, speed As integer)
+'this subroutine is called for spaceship when the timer is activated
+
+'set ship boundaries
+  ShipTop = Ship.Top
+  ShipLeft = Ship.Left
+  ShipRight = Ship.Left + Ship.Width
+  ShipBottom = Ship.Top + Ship.Height
+
+'successful landing
+if shipBottom > Base[j].y and movedown < 5 and shipleft > Base[j].x - 1 and shipright < base[j].x + 51 then
+    shipbottom = Base[j].y
+    Timer1.Enabled = False
+    fuelpoints = fuel
+    points = points + 100 + spdpoints + fuelpoints
+    Tspdpoints = Tspdpoints + spdpoints
+    Tfuelpoints = Tfuelpoints + fuelpoints
+    Land = Land + 1
+    msgbox("Your ship landed safely")
+    ShipRandom
+  For i = 1 to 10
+   DeleteBase i
+  Next
+  For i = 1 to 10
+    CreateBase i
+  next
+  safespot()
+    
+    
+  End if
+  'crashing for high speed
+  if shipBottom > Base[j].y and movedown > 5 and shipleft > Base[j].x - 1 and shipright < base[j].x + 51 then
+    shipbottom = Base[j].y
+    Timer1.Enabled = False
+    CmdTryAgain.Visible = True
+    msgbox("Your ship crashed")
+    msgbox("You scored:" & KbCrLf & "landing points: 100 X " & Land & KbCrLf & "Fuel bonus: " & Tfuelpoints & KbCrLf & "time bonus: " & Tspdpoints & KbCrLf & "------------------------" & KbCrLf & "Total: " & points & " points")
+  End if
+  
+  For i = 1 to 10
+'detection for right walls
+  if shipBottom > Base[i].y and shipLeft > base[i].x - 1 and shipLeft < Base[i].x + 51 then
+    shipbottom = Base[i].y
+    Timer1.Enabled = False
+    CmdTryAgain.Visible = True
+    msgbox("Your ship crashed")
+    msgbox("You scored:" & KbCrLf & "landing points: 100 X " & Land & KbCrLf & "Fuel bonus: " & Tfuelpoints & KbCrLf & "time bonus: " & Tspdpoints & KbCrLf & "------------------------" & KbCrLf & "Total: " & points & " points")
+  End if
+'detection for left walls
+  if shipBottom - 10  > Base[i].y and shipright < base[i].x + 51 and shipright > Base[i].x  then
+    shipbottom = Base[i].y
+    Timer1.Enabled = False
+    CmdTryAgain.Visible = True
+    msgbox("Your ship crashed")
+    msgbox("You scored:" & KbCrLf & "landing points: 100 X " & Land & KbCrLf & "Fuel bonus: " & Tfuelpoints & KbCrLf & "time bonus: " & Tspdpoints & KbCrLf & "------------------------" & KbCrLf & "Total: " & points & " points")
+  End if
+  next 
+  
+End Sub
+'------------------------------------------------------------------------------------
+Private Sub Timer1_OnEvent()
+'activate the ship and drop it as time goes by
+  animateSpaceShip (imgShip, Movedown)
+  Movedown = Movedown + 1
+  spdpoints = spdpoints - 1
+  if spdpoints < 0 then 
+    spdpoints = 0
+  end if
+'Move spaceship according to the thrust and side movement
+  imgship.top = imgship.top + MoveDown
+  imgship.Left = imgShip.Left + MoveSide
+  
+  'Make sure that Ship doesn't go above the game screen
+   if imgship.top < 0 then
+      imgship.top = 0 
+    end if
+  'ship won't go left of screen
+   if imgship.left < 0 then
+     imgShip.left = 0
+    end if
+   
+   if imgship.left + imgship.width > form1.left + form1.width then
+      imgship.left = 10
+    end if
+  'define y value from the ground
+  YValue = Form1.height - (imgship.top + imgship.height)
+  if YValue < 0 then
+    YValue = 0
+  end if
+  LblStats.caption = "Fuel:" & Fuel & KbCrLf & "Thrust:" & MoveDown & KbCrLf & "Side:" & MoveSide & KbCrLf & "Y Axis:" & YValue
+ 
+  'color changes when velocity is too high 
+  'too fast
+  if movedown > 5 and fuel > 15 then 
+     lblstats.fontcolor = "&HFFFF00"
+     end if
+  'worst   
+  if movedown > 5 and fuel < 15 then 
+    lblstats.fontcolor = "&HFF0000"
+    end if
+    'fine-green
+  if movedown < 5 and fuel > 15 then
+    lblstats.fontcolor = "&H00FF00"
+    end if
+    'low fuel
+  if movedown < 5 and fuel < 15 then 
+    lblstats.fontcolor = "&HFFFF00"
+    end if
+End Sub
+'------------------------------------------------------------------------------------
+Private Sub CmdQuit_OnEvent()'quit
+  End
+End Sub
+Private Sub CmdHelp_OnEvent()'help button
+  Help.open'open up new form for help
+End Sub
+'------------------------------------------------------------------------------------
+Private Sub CmdTryAgain_OnEvent()
+  CmdTryAgain.visible = False
+  fuel = 100
+  Timer1.enabled = True
+  Points = 0
+  Spdpoints = 0
+  Fuelpoints = 0
+  TSpdpoints = 0
+  TFuelpoints = 0
+  Land = 0
+  
+  For i = 1 to 10
+   DeleteBase i
+  Next
+  ShipRandom()
+  randomize
+   dim i as integer   
+     
+   For i = 1 to 10
+      CreateBase i
+    Next    
+    Safespot()
+End Sub
+
+
+
